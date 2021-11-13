@@ -44,6 +44,7 @@ namespace Astrum.AstralCore.Managers
 
         public class Command
         {
+            public string module = "";
             public Func<string[], string> onExecute;
 
             public void Register(string name) => commands.Add(name, this);

@@ -47,6 +47,13 @@
     <Reference Include="UnhollowerRuntimeLib">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat\MelonLoader\Managed\UnhollowerRuntimeLib.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat\MelonLoader\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="VRCCore-Standalone">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat\MelonLoader\Managed\VRCCore-Standalone.dll</HintPath>
+    </Reference>
     <Reference Include="VRCSDKBase">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat\MelonLoader\Managed\VRCSDKBase.dll</HintPath>
     </Reference>
@@ -55,8 +62,10 @@
     <Compile Include="AstralCore.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Hooks\Hooks.cs" />
+    <Compile Include="Hooks\OnPlayerJL.cs" />
     <Compile Include="Hooks\OnRPC.cs" />
     <Compile Include="Managers\CommandManager.cs" />
+    <Compile Include="Types\Player.cs" />
     <Compile Include="Utils\MemoryUtils.cs" />
     <Compile Include="Utils\PatternScan.cs" />
   </ItemGroup>
