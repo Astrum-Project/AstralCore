@@ -1,7 +1,7 @@
 ﻿using MelonLoader;
 using System;
 
-[assembly: MelonInfo(typeof(Astrum.AstralCore.Loader), "AstralCore", "0.3.2", downloadLink: "github.com/Astrum-Project/AstralCore")]
+[assembly: MelonInfo(typeof(Astrum.AstralCore.Loader), "AstralCore", "0.4.0", downloadLink: "github.com/Astrum-Project/AstralCore")]
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonColor(ConsoleColor.DarkMagenta)]
 

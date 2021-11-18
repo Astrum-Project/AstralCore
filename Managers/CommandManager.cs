@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MelonLoader.TinyJSON;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,73 +28,54 @@ namespace Astrum.AstralCore.Managers
             }.Register("list", "help");
         }
 
-        public static Dictionary<string, Command> commands = new Dictionary<string, Command>(StringComparer.OrdinalIgnoreCase);
+        public static Dictionary<string, Command> commands
+        {
+            get => coreModule.commands;
+        }
+
+        private static ModuleManager.Module coreModule = new ModuleManager.Module("Core");
 
         public static string Execute(string raw)
         {
-            raw.Trim();
-            string[] tokens = raw.Split(' ');
+            string[] tokens = raw.Trim().Split(' ');
 
-            if (!commands.ContainsKey(tokens[0])) return "Unknown command";
+            if (!ModuleManager.modules.TryGetValue(tokens[0], out ModuleManager.Module module))
+                return "Unknown Module";
 
-            return commands[tokens[0]].onExecute(tokens.Skip(1).ToArray());
+            if (!module.commands.TryGetValue(tokens[1], out Command command))
+                return "Unknown Command";
+
+            return command.onExecute(tokens.Skip(2).ToArray());
         }
 
         public static void Unregister(string name) => commands.Remove(name);
 
         public class Command
         {
-            public string module = "";
             public Func<string[], string> onExecute;
 
             public void Register(string name) => commands.Add(name, this);
             public void Register(params string[] aliases) => aliases.ToList().ForEach(f => Register(f));
+            public void Register(ModuleManager.Module module, string name) => module.Register(this, name);
+            public void Register(ModuleManager.Module module, params string[] aliases) => aliases.ToList().ForEach(f => Register(module, f));
             public void Unregister() => commands.Where(f => f.Value == this).Select(f => f.Key).ToList().ForEach(f => CommandManager.Unregister(f));
         }
 
-        public class ConVar
+        public class ConVar<T> : Command
         {
-            public Action<object> onChange;
-            private Command command;
+            public Action<T> onChange;
 
-            public ConVar(Action<object> onChange, Func<string, object> tryParse) 
+            public ConVar(Action<T> onChange)
             {
                 this.onChange = onChange;
 
-                command = new Command
+                onExecute = new Func<string[], string>(args =>
                 {
-                    onExecute = new Func<string[], string>(args =>
-                    {
-                        object res = tryParse(string.Join(" ", args));
-                        if (res is null) return "Invalid input";
-                        
-                        onChange(res);
-                        return "";
-                    })
-                };
+                    onChange(Decoder.Decode(string.Join(" ", args)).Make<T>());
+
+                    return "";
+                });
             }
-
-            public void Register(string name) => command.Register(name);
-            public void Register(params string[] aliases) => command.Register(aliases);
-            public void Unregister() => command.Unregister();
-
-            public static Func<string, object> TryParseBool = new Func<string, object>(s =>
-            {
-                if (bool.TryParse(s, out bool result)) return result;
-                return null;
-            });
-            public static Func<string, object> TryParseInt = new Func<string, object>(s =>
-            {
-                if (int.TryParse(s, out int result)) return result;
-                return null;
-            });
-            public static Func<string, object> TryParseFloat = new Func<string, object>(s =>
-            {
-                if (float.TryParse(s, out float result)) return result;
-                return null;
-            });
-            public static Func<string, object> TryParseString = new Func<string, object>(s => s);
-
         }
     }
 }
