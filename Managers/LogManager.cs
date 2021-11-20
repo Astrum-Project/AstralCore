@@ -8,6 +8,17 @@ namespace Astrum.AstralCore.Managers
 {
     public static class LogManager
     {
+        static LogManager()
+        {
+            if (MelonDebug.IsEnabled() || Environment.CommandLine.ToLower().Contains("--astral.debug"))
+            {
+                OnTrace += s => MelonLogger.Msg("\r[\x1b[35mAstral \x1b[0mTrace] \x1b[K" + s);
+                OnDebug += s => MelonLogger.Msg("\r[\x1b[35mAstral \x1b[34mDebug\x1b[0m] \x1b[K" + s);
+
+                Logger.Trace("Logger loaded");
+            }
+        }
+
         private static Text log;
         private static Queue<string> lines = new Queue<string>();
 
@@ -41,8 +52,8 @@ namespace Astrum.AstralCore.Managers
             log.text = string.Join("\n", lines);
         }
 
-        public static Action<string> OnTrace = new Action<string>(s => MelonLogger.Msg("\r[\x1b[35mAstral \x1b[0mTrace] \x1b[K" + s));
-        public static Action<string> OnDebug = new Action<string>(s => MelonLogger.Msg("\r[\x1b[35mAstral \x1b[34mDebug\x1b[0m] \x1b[K" + s));
+        public static Action<string> OnTrace = new Action<string>(_ => {});
+        public static Action<string> OnDebug = new Action<string>(_ => {});
         public static Action<string> OnInfo  = new Action<string>(s => MelonLogger.Msg("\r[\x1b[35mAstral \x1b[36mInfo \x1b[0m] \x1b[K" + s));
         public static Action<string> OnNotif = new Action<string>(s => MelonLogger.Msg("\r[\x1b[35mAstral \x1b[36mNotif\x1b[0m] \x1b[K" + s));
         public static Action<string> OnWarn  = new Action<string>(s => MelonLogger.Msg("\r[\x1b[35mAstral \x1b[33mWarn \x1b[0m] \x1b[K" + s));

@@ -13,7 +13,12 @@ namespace Astrum.AstralCore.Managers
 
             public Dictionary<string, CommandManager.Command> commands = new Dictionary<string, CommandManager.Command>(StringComparer.OrdinalIgnoreCase);
 
-            public void Register(CommandManager.Command command, string name) => commands.Add(name, command);
+            public void Register(string name, CommandManager.Command command) => commands.Add(name, command);
+            public void Register(CommandManager.Command command, params string[] names)
+            {
+                foreach (string name in names) 
+                    Register(name, command);
+            }
         }
     }
 }

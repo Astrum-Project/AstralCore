@@ -24,8 +24,18 @@ namespace Astrum.AstralCore.Managers
 
             new Command
             {
-                onExecute = new Func<string[], string>(args => "Reserved for future use")
-            }.Register("list", "help");
+                onExecute = new Func<string[], string>(_ => string.Join("\0", ModuleManager.modules.Select(f => f.Key)))
+            }.Register("Get-Modules", "help");
+
+            new Command
+            {
+                onExecute = new Func<string[], string>(args =>
+                {
+                    if (!ModuleManager.modules.TryGetValue(String.Join(" ", args), out ModuleManager.Module module))
+                        return "";
+                    return string.Join("\0", module.commands.Select(f => f.Key));
+                })
+            }.Register("Get-Commands", "list");
         }
 
         public static Dictionary<string, Command> commands
@@ -52,6 +62,9 @@ namespace Astrum.AstralCore.Managers
 
         public class Command
         {
+            public Command() { }
+            public Command(Func<string[], string> onExecute) => this.onExecute = onExecute;
+
             public Func<string[], string> onExecute;
 
             public void Register(string name) => commands.Add(name, this);
