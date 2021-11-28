@@ -76,15 +76,46 @@ namespace Astrum.AstralCore.Managers
 
         public class ConVar<T> : Command
         {
+            private T _value;
+            public T Value
+            {
+                get => _value;
+                set
+                {
+                    if (!_value.Equals(value))
+                        onChange(_value = value);
+                }
+            }
+
             public Action<T> onChange;
 
-            public ConVar(Action<T> onChange)
+            public ConVar(Action<T> onChange, T value) 
             {
                 this.onChange = onChange;
+                _value = value;
 
                 onExecute = new Func<string[], string>(args =>
                 {
-                    onChange(Decoder.Decode(string.Join(" ", args)).Make<T>());
+                    onChange(_value = Decoder.Decode(string.Join(" ", args)).Make<T>());
+
+                    return "";
+                });
+            }
+
+            public ConVar(Action<T> onChange) : this(onChange, default) {}
+        }
+
+        public class Button : Command
+        {
+            public Action onClick;
+
+            public Button(Action onClick)
+            {
+                this.onClick = onClick;
+
+                onExecute = new Func<string[], string>(_ =>
+                {
+                    onClick();
 
                     return "";
                 });
