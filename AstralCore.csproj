@@ -75,6 +75,7 @@
     <Compile Include="Managers\CommandManager.cs" />
     <Compile Include="Managers\LogManager.cs" />
     <Compile Include="Managers\ModuleManager.cs" />
+    <Compile Include="Managers\SelectionManager.cs" />
     <Compile Include="Types\Player.cs" />
     <Compile Include="Utils\MemoryUtils.cs" />
     <Compile Include="Utils\PatternScan.cs" />
