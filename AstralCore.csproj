@@ -34,6 +34,9 @@
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat\MelonLoader\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Il2Cppmscorlib">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat\MelonLoader\Managed\Il2Cppmscorlib.dll</HintPath>
     </Reference>
@@ -76,6 +79,7 @@
     <Compile Include="Managers\LogManager.cs" />
     <Compile Include="Managers\ModuleManager.cs" />
     <Compile Include="Managers\SelectionManager.cs" />
+    <Compile Include="Types\VRCNetworkingClient.cs" />
     <Compile Include="Types\Player.cs" />
     <Compile Include="Utils\MemoryUtils.cs" />
     <Compile Include="Utils\PatternScan.cs" />
