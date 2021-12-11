@@ -30,12 +30,12 @@ namespace Astrum.AstralCore.Hooks
 
             if (m_OnRPC != null)
             {
-                MelonLogger.Msg("EventHandler is " + m_OnRPC.DeclaringType.Name);
-                MelonLogger.Msg("OnRPC is " + m_OnRPC.Name);
+                Logger.Debug("EventHandler=" + m_OnRPC.DeclaringType.Name);
+                Logger.Debug("EventHandler::OnRPC=" + m_OnRPC.Name);
 
                 harmony.Patch(m_OnRPC, typeof(OnRPC).GetMethod(nameof(HookOnRPC), Hooks.PrivateStatic).ToNewHarmonyMethod());
             }
-            else MelonLogger.Msg("Failed to find OnRPC");
+            else Logger.Warn("Failed to find EventHandler::OnRPC");
         }
 
         private static void HookOnRPC(object __0, VRC_EventHandler.VrcEvent __1, VRC_EventHandler.VrcBroadcastType __2, int __3, float __4) => 

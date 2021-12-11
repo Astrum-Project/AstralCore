@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Astrum.AstralCore.Types
 {
@@ -22,14 +20,18 @@ namespace Astrum.AstralCore.Types
                 .Where(x => x.BaseType?.BaseType == typeof(Il2CppSystem.Object))
                 .FirstOrDefault(x => x.Namespace == "VRC.Core");
 
-            Logger.Debug($"{nameof(VRCNetworkingClient)}={Type}");
+            if (Type is null)
+            {
+                Logger.Warn($"Failed to find {nameof(VRCNetworkingClient)}");
+                return;
+            } else Logger.Debug($"{nameof(VRCNetworkingClient)}={Type}");
 
             m_OpRaiseEvent = Type.GetMethods()
                 .Where(x => x.DeclaringType == Type.BaseType)
                 .Where(x => x.ReturnType == typeof(bool))
                 .FirstOrDefault(x =>
                 {
-                    var args = x.GetParameters();
+                    ParameterInfo[] args = x.GetParameters();
                     return args.Length == 4
                     && args[0].ParameterType == typeof(byte)
                     && args[1].ParameterType == typeof(Il2CppSystem.Object)
@@ -37,16 +39,34 @@ namespace Astrum.AstralCore.Types
                     && args[3].ParameterType.IsValueType;
                 });
 
-            Logger.Debug($"{nameof(VRCNetworkingClient)}::{nameof(OpRaiseEvent)}={m_OpRaiseEvent}");
+            if (m_OpRaiseEvent is null)
+                Logger.Warn($"Failed to find {nameof(VRCNetworkingClient)}::{nameof(OpRaiseEvent)}");
+            else Logger.Debug($"{nameof(VRCNetworkingClient)}::{nameof(OpRaiseEvent)}={m_OpRaiseEvent}");
 
             m_Instance = Type.GetProperties()
                 .FirstOrDefault(x => x.PropertyType == m_Instance);
 
-            Logger.Debug($"{nameof(VRCNetworkingClient)}::{nameof(Instance)}={m_Instance}");
+            if (m_Instance is null)
+                Logger.Warn($"Failed to find {nameof(VRCNetworkingClient)}::{nameof(Instance)}");
+            else
+            {
+                Logger.Debug($"{nameof(VRCNetworkingClient)}::{nameof(Instance)}={m_Instance}");
+
+                Instance = m_Instance.GetValue(null);
+                if (Instance is null) 
+                    MelonLoader.MelonCoroutines.Start(GetInstance());
+            }
         }
 
-        // TODO: bake the MethodInfo to a delegate and cache the Instance
+        // instance is created right after OnApplicationStart
+        private static System.Collections.IEnumerator GetInstance()
+        {
+            yield return null;
+            Instance = m_Instance.GetValue(null);
+        }
+
+        // TODO: bake the MethodInfo to a delegate
         public static bool OpRaiseEvent(byte eventCode, object customEventContent, object raiseEventOptions, object sendOptions) =>
-            (bool)m_OpRaiseEvent.Invoke(m_Instance.GetValue(null), new object[] { eventCode, customEventContent, raiseEventOptions, sendOptions });
+            (bool)m_OpRaiseEvent.Invoke(Instance, new object[] { eventCode, customEventContent, raiseEventOptions, sendOptions });
     }
 }
