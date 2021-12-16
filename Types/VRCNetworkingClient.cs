@@ -44,7 +44,7 @@ namespace Astrum.AstralCore.Types
             else Logger.Debug($"{nameof(VRCNetworkingClient)}::{nameof(OpRaiseEvent)}={m_OpRaiseEvent}");
 
             m_Instance = Type.GetProperties()
-                .FirstOrDefault(x => x.PropertyType == m_Instance);
+                .FirstOrDefault(x => x.PropertyType == Type);
 
             if (m_Instance is null)
                 Logger.Warn($"Failed to find {nameof(VRCNetworkingClient)}::{nameof(Instance)}");

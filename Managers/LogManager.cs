@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using VRC.SDKBase;
 
 namespace Astrum.AstralCore.Managers
 {
@@ -47,6 +48,11 @@ namespace Astrum.AstralCore.Managers
 
         public static System.Collections.IEnumerator DisplayOnScreen(string message, float duration)
         {
+            yield return null;
+
+            foreach (VRCPlayerApi player in VRCPlayerApi.AllPlayers)
+                message = message.Replace(player.displayName, $"<color=#5ab2a8>{player.displayName}</color>");
+
             lines.Enqueue(message);
             log.text = string.Join("\n", lines);
             yield return new WaitForSecondsRealtime(duration);
