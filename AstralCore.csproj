@@ -75,9 +75,7 @@
     <Compile Include="Hooks\OnPlayerJL.cs" />
     <Compile Include="Hooks\OnRPC.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Managers\CommandManager.cs" />
     <Compile Include="Managers\LogManager.cs" />
-    <Compile Include="Managers\ModuleManager.cs" />
     <Compile Include="Managers\SelectionManager.cs" />
     <Compile Include="Types\VRCNetworkingClient.cs" />
     <Compile Include="Types\Player.cs" />
