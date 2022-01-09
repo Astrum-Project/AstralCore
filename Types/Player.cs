@@ -36,6 +36,7 @@ namespace Astrum.AstralCore.Types
             VRCPlayerApi = m_VRCPlayerApi?.GetValue(inner) as VRCPlayerApi;
         }
 
+        // someone should probably test these
         public override int GetHashCode() => this?.Inner.GetHashCode() ?? 0;
         public override bool Equals(object obj) => this?.Inner.Equals(obj) ?? obj is null;
         public static bool operator == (Player self, Player other) => ReferenceEquals(self?.Inner, other?.Inner);
