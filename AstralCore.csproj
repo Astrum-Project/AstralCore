@@ -10,7 +10,7 @@
     <RootNamespace>Astrum.AstralCore</RootNamespace>
     <AssemblyName>AstralCore</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-	<LangVersion>preview</LangVersion>
+    <LangVersion>preview</LangVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -35,14 +35,25 @@
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat.BepInEx\BepInEx\core\0Harmony.dll</HintPath>
+      <Aliases>global,bie</Aliases>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat\MelonLoader\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx.Core">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat.BepInEx\BepInEx\core\BepInEx.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx.IL2CPP">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat.BepInEx\BepInEx\core\BepInEx.IL2CPP.dll</HintPath>
     </Reference>
     <Reference Include="Il2Cppmscorlib">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat\MelonLoader\Managed\Il2Cppmscorlib.dll</HintPath>
     </Reference>
     <Reference Include="MelonLoader">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat\MelonLoader\MelonLoader.dll</HintPath>
+      <Aliases>global,ml</Aliases>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -70,15 +81,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AstralCore.cs" />
+    <Compile Include="Impl\BIE\BIEHarmony.cs" />
+    <Compile Include="Impl\ML\Loader.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Hooks\Hooks.cs" />
     <Compile Include="Hooks\OnPlayerJL.cs" />
+    <Compile Include="Impl\AnyHarmony.cs" />
+    <Compile Include="Impl\BIE\Loader.cs" />
+    <Compile Include="Impl\ML\MLHarmony.cs" />
+    <Compile Include="Impl\ImplInfo.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Managers\LogManager.cs" />
     <Compile Include="Managers\SelectionManager.cs" />
     <Compile Include="Types\VRCNetworkingClient.cs" />
     <Compile Include="Types\Player.cs" />
+    <Compile Include="Utils\LogType.cs" />
     <Compile Include="Utils\MemoryUtils.cs" />
     <Compile Include="Utils\PatternScan.cs" />
   </ItemGroup>

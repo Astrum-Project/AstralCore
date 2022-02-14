@@ -11,19 +11,8 @@ namespace Astrum.AstralCore.Managers
 {
     public static class LogManager
     {
-        static LogManager()
-        {
-            if (MelonDebug.IsEnabled() || Environment.CommandLine.ToLower().Contains("--astral.debug"))
-            {
-                OnTrace += s => MelonLogger.Msg("\r[\x1b[35mAstral \x1b[0mTrace] \x1b[K" + s);
-                OnDebug += s => MelonLogger.Msg("\r[\x1b[35mAstral \x1b[34mDebug\x1b[0m] \x1b[K" + s);
-
-                Logger.Trace("Logger loaded");
-            }
-        }
-
         private static Text log;
-        private static readonly Queue<string> lines = new Queue<string>();
+        private static readonly Queue<string> lines = new();
 
         internal static void Initialize()
         {
@@ -44,7 +33,7 @@ namespace Astrum.AstralCore.Managers
             log.supportRichText = true;
             log.fontSize = 30;
 
-            OnNotif += s => MelonCoroutines.Start(DisplayOnScreen(s, 3));
+            Logger.OnNotif += s => MelonCoroutines.Start(DisplayOnScreen(s, 3));
         }
 
         public static System.Collections.IEnumerator DisplayOnScreen(string message, float duration)
@@ -63,13 +52,5 @@ namespace Astrum.AstralCore.Managers
             lines.Dequeue();
             log.text = string.Join("\n", lines);
         }
-
-        public static Action<string> OnTrace = new(_ => {});
-        public static Action<string> OnDebug = new(_ => {});
-        public static Action<string> OnInfo  = new(s => MelonLogger.Msg("\r[\x1b[35mAstral \x1b[36mInfo \x1b[0m] \x1b[K" + s));
-        public static Action<string> OnNotif = new(s => MelonLogger.Msg("\r[\x1b[35mAstral \x1b[36mNotif\x1b[0m] \x1b[K" + s));
-        public static Action<string> OnWarn  = new(s => MelonLogger.Msg("\r[\x1b[35mAstral \x1b[33mWarn \x1b[0m] \x1b[K" + s));
-        public static Action<string> OnError = new(s => MelonLogger.Msg("\r[\x1b[35mAstral \x1b[31mError\x1b[0m] \x1b[K" + s));
-        public static Action<string> OnFatal = new(s => MelonLogger.Msg("\r[\x1b[35mAstral \x1b[31mFatal\x1b[0m] \x1b[K" + s));
     }
 }

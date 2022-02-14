@@ -17,9 +17,17 @@ namespace Astrum.AstralCore.Types
         static Player()
         {
             Type = Hooks.Hooks.AssemblyCSharp.GetExportedTypes()
-                .Where(f => f.Namespace == "VRC")
-                .OrderByDescending(f => f.GetProperties().Count(f1 => f1.PropertyType == typeof(bool)))
+                .Where(x => x.BaseType == typeof(MonoBehaviour))
+                .Where(x => x.GetConstructors().Length == 2)
+                .Where(x => x.GetMethod("OnNetworkReady") != null)
+                .Where(f => {
+                    var props = f.GetProperties();
+                    return props.Any(f => f.PropertyType == typeof(VRCPlayerApi)) 
+                        && props.Any(f => f.PropertyType == typeof(APIUser));
+                })
                 .FirstOrDefault();
+
+            Utils.LogType.Self("Player", Type);
 
             m_APIUser = Type.GetProperties().FirstOrDefault(f => f.PropertyType == typeof(APIUser));
             m_VRCPlayerApi = Type.GetProperties().FirstOrDefault(f => f.PropertyType == typeof(VRCPlayerApi));

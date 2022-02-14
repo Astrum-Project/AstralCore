@@ -10,7 +10,7 @@ namespace Astrum.AstralCore.Hooks
 
         public static Assembly AssemblyCSharp;
 
-        public static void Initialize(HarmonyLib.Harmony harmony)
+        public static void Initialize(Impl.AnyHarmony harmony)
         {
             Preload();
 
@@ -21,7 +21,7 @@ namespace Astrum.AstralCore.Hooks
         }
 
         // if this function fails, then Assembly-CSharp has not been loaded
-        // i'm not sure why that happened to someone as this mod refereneces it
+        // i'm not sure why that happened to someone as this mod references it
         // a simple fix would be to add something alphabetically before this mod
         // such as ActionMenuApi or AdvancedSafety
         private static void Preload()

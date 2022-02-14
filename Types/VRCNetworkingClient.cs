@@ -53,17 +53,12 @@ namespace Astrum.AstralCore.Types
                 Logger.Debug($"{nameof(VRCNetworkingClient)}::{nameof(Instance)}={m_Instance}");
 
                 Instance = m_Instance.GetValue(null);
-                if (Instance is null) 
-                    MelonLoader.MelonCoroutines.Start(GetInstance());
+                Events.OnUIInit += GetInstance;
             }
         }
 
         // instance is created right after OnApplicationStart
-        private static System.Collections.IEnumerator GetInstance()
-        {
-            yield return null;
-            Instance = m_Instance.GetValue(null);
-        }
+        private static void GetInstance() => Instance = m_Instance.GetValue(null);
 
         // TODO: bake the MethodInfo to a delegate
         public static bool OpRaiseEvent(byte eventCode, object customEventContent, object raiseEventOptions, object sendOptions) =>
