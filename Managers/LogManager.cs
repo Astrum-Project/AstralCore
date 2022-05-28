@@ -30,7 +30,7 @@ namespace Astrum.AstralCore.Managers
             GameObject gameObject = new("AstralLog");
             log = gameObject.AddComponent<Text>();
 
-            gameObject.transform.SetParent(GameObject.Find("UserInterface/UnscaledUI/HudContent/Hud").transform, false);
+            gameObject.transform.SetParent(GameObject.Find("UserInterface/UnscaledUI/HudContent_Old/Hud").transform, false);
             gameObject.transform.localPosition = new Vector3(15, 300);
 
             gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(1000, 30);
